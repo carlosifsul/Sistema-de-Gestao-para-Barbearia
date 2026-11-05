@@ -27,8 +27,9 @@ O sistema contempla:
 ---
 
 ## 2. Diagrama de Classes 
+![Diagrama de Casos de Uso](.b5c0bf41-08e2-4b9f-bff0-3b01146d6425.png)
 
-
+*Descrição do Diagrama:* O diagrama ilustra as interações dos atores **Cliente** e **Barbeiro** com o sistema **BarberSys**. O caso de uso *Realizar Agendamento* exige obrigatoriamente a execução de *Consultar Horários* (`<<include>>`), enquanto a funcionalidade *Aplicar Cupom de Desconto* estende a funcionalidade de agendamento de forma condicional (`<<extend>>`).
 
 ---
 
