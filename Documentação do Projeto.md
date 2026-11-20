@@ -3,7 +3,7 @@
 ## 1. Fase de Análise
 
 ### 1.1. Requisitos Funcionais (RF)
-- **RF01:** O sistema deve permitir o cadastro e login de clientes, barbeiros e administradores.
+- **RF01 (Cadastro e Autenticação):** O sistema deve permitir o cadastro de clientes (solicitando nome completo, e-mail, telefone/WhatsApp, CPF e senha) e a autenticação (login) de clientes, barbeiros e administradores mediante e-mail e senha.
 - **RF02:** O sistema deve permitir que o cliente consulte os horários disponíveis por barbeiro e por serviço.
 - **RF03:** O sistema deve permitir que o cliente realize o agendamento de um ou mais serviços.
 - **RF04:** O sistema deve permitir que o cliente cancele ou remarque um agendamento com antecedência.
@@ -25,87 +25,59 @@
 - **RN01 (Cancelamento):** O cancelamento de um agendamento sem taxa de penalidade só pode ser efetuado pelo cliente com no mínimo 2 horas de antecedência em relação ao horário marcado.
 - **RN02 (Sobreposição de Horários):** O sistema não deve permitir dois agendamentos no mesmo horário para o mesmo barbeiro.
 - **RN03 (Tolerância de Atraso):** Se o cliente não comparecer até 15 minutos após o horário agendado, o status do atendimento muda automaticamente para "Falta".
+- **RN04 (Critérios de Cadastro):** Para realizar o autocadastro como cliente, é obrigatório informar nome completo, e-mail válido e único, telefone (WhatsApp), CPF válido e senha com no mínimo 8 caracteres (contendo letras e números). O cadastro de novos barbeiros e administradores não é público, sendo efetuado exclusivamente pelo Administrador.
+- **RN05 (Autenticação e Login):** O acesso (login) ao sistema exige e-mail cadastrado e senha. Após 5 tentativas consecutivas de login com senha incorreta, a conta é temporariamente bloqueada por 15 minutos por segurança.
 
 ### 1.4. Diagrama de Casos de Uso
 
 ![Diagrama de Casos de Uso](./img/diagrama-casos-de-uso.png)
 
-*Descrição do Diagrama:* O diagrama ilustra as interações dos atores **Cliente** e **Barbeiro** com o sistema **BarberSys**. O caso de uso *Realizar Agendamento* exige obrigatoriamente a execução de *Consultar Horários* (`<<include>>`), enquanto a funcionalidade *Aplicar Cupom de Desconto* estende a funcionalidade de agendamento de forma condicional (`<<extend>>`).
+*Descrição do Diagrama:* O diagrama ilustra as interações dos atores **Cliente**, **Barbeiro** e **Administrador** com o sistema **BarberSys**. Contempla o fluxo de cadastro do cliente e autenticação dos três perfis, as operações de agendamento do cliente (com inclusão obrigatória de consulta de horários e extensão opcional de cupom), o controle de agenda pelo barbeiro e as funções administrativas de gestão de serviços, barbeiros e relatórios.
 
 ---
 
-## 2. Documentação dos Casos de Uso
+---
 
-### UC01: Realizar Agendamento
-* **Caso de Uso:** UC01 — Realizar Agendamento
-* **Ator Principal:** Cliente
-* **Resumo:** Permite que o cliente selecione o barbeiro, o serviço desejado e a data/horário para efetuar uma reserva de atendimento na barbearia.
-* **Pré-condições:** O cliente deve estar autenticado e deve existir pelo menos um barbeiro disponível.
-* **Pós-condições:** O agendamento é registado com status "Agendado".
+### UC00: Cadastrar Conta e Realizar Login
+* **Caso de Uso:** UC00 — Cadastrar Conta e Realizar Login
+* **Ator Principal:** Cliente (Cadastro e Login), Barbeiro (Login), Administrador (Login)
+* **Resumo:** Permite o autocadastro de novos clientes e a autenticação de todos os perfis de utilizadores no sistema.
+* **Pré-condições:** O utilizador deve aceder à página inicial do sistema.
+* **Pós-condições:** O cliente tem a conta registada na base de dados e/ou o utilizador acede ao painel correspondente ao seu perfil.
 
-#### FLUXO PRINCIPAL
-1. O cliente escolhe a opção "Novo Agendamento".
-2. O sistema executa o caso de uso **UC02 — Consultar Horários** (`<<include>>`).
-3. O cliente seleciona o barbeiro, serviço, data e horário disponível.
-4. O cliente confirma a reserva.
-5. O sistema valida as informações e regista o agendamento.
-6. O sistema exibe a mensagem de confirmação.
+#### FLUXO PRINCIPAL (Cadastro de Cliente)
+1. O cliente seleciona a opção "Criar Conta".
+2. O sistema solicita nome completo, e-mail, telefone (WhatsApp), CPF e senha.
+3. O cliente preenche os dados e confirma.
+4. O sistema valida o formato dos dados, a unicidade do e-mail/CPF e os requisitos mínimos da senha (**RN04**).
+5. O sistema cria o registo com perfil "Cliente" e confirma o cadastro.
 
-#### FLUXOS ALTERNATIVOS
-* **FA01 — Aplicar Cupom de Desconto (`<<extend>>`):**
-  * **2a.** No passo 4 do Fluxo Principal, o cliente insere um código de cupom válido.
-  * **2b.** O sistema valida o cupom e recalcula o valor total com desconto.
+#### FLUXO ALTERNATIVO
+* **FA01 — Realizar Login:**
+  * **1a.** O utilizador (Cliente, Barbeiro ou Administrador) informa e-mail e senha na tela de login.
+  * **1b.** O sistema valida as credenciais (**RN05**).
+  * **1c.** O sistema redireciona o utilizador para o painel específico do seu perfil.
 
 #### FLUXOS DE EXCEÇÃO
-* **FE01 — Indisponibilidade de Horário:**
-  * **3a.** O horário escolhido é ocupado por outro utilizador antes da confirmação.
-  * **3b.** O sistema informa o erro e solicita nova seleção.
+* **FE01 — Dados Inválidos ou Já Cadastrados:**
+  * **4a.** O sistema identifica que o e-mail ou CPF já existem ou que a senha não cumpre a **RN04**.
+  * **4b.** O sistema exibe mensagem informando o campo inválido e solicita correção.
+* **FE02 — Falha de Autenticação e Bloqueio (RN05):**
+  * **1b.1.** O utilizador insere e-mail ou senha incorretos.
+  * **1b.2.** O sistema exibe mensagem de credenciais inválidas. Caso atinja 5 tentativas seguidas, bloqueia o acesso por 15 minutos.
 
 ---
 
-### UC02: Consultar Horários
-* **Caso de Uso:** UC02 — Consultar Horários
-* **Ator Principal:** Cliente
-* **Resumo:** Pesquisa e exibe as datas e horários disponíveis na agenda dos barbeiros.
-* **Pré-condições:** Jornada de trabalho dos barbeiros cadastrada.
-* **Pós-condições:** Exibição da grelha de horários livres.
+### UC05: Gerenciar Serviços e Barbeiros (Administrador)
+* **Caso de Uso:** UC05 — Gerenciar Serviços e Barbeiros
+* **Ator Principal:** Administrador
+* **Resumo:** Permite ao administrador cadastrar, editar ou inativar serviços oferecidos pela barbearia, bem como cadastrar barbeiros e definir as suas jornadas de trabalho.
+* **Pré-condições:** O administrador deve estar autenticado no sistema.
+* **Pós-condições:** O catálogo de serviços e/ou as escalas de horários dos barbeiros são atualizados e disponibilizados para agendamento.
 
 #### FLUXO PRINCIPAL
-1. O sistema solicita os critérios de busca.
-2. O cliente seleciona a data e/ou barbeiro pretendido.
-3. O sistema pesquisa os horários sem marcação.
-4. O sistema exibe a lista de horários disponíveis.
-
----
-
-### UC03: Cancelar Agendamento
-* **Caso de Uso:** UC03 — Cancelar Agendamento
-* **Ator Principal:** Cliente
-* **Resumo:** Permite ao cliente cancelar um agendamento efetuado previamente.
-* **Pré-condições:** Cliente autenticado com agendamento ativo.
-* **Pós-condições:** Status alterado para "Cancelado" e horário libertado.
-
-#### FLUXO PRINCIPAL
-1. O cliente acede a "Meus Agendamentos".
-2. O cliente seleciona o agendamento e clica em "Cancelar".
-3. O sistema valida a regra de antecedência (**RN01**).
-4. O cliente confirma a operação.
-5. O sistema cancela a reserva e libera a agenda.
-
-#### FLUXOS DE EXCEÇÃO
-* **FE01 — Cancelamento Fora do Prazo (RN01):**
-  * **3a.** Pedido feito com menos de 2h de antecedência.
-  * **3b.** O sistema bloqueia a ação e indica contacto telefónico.
-
----
-
-### UC04: Visualizar Agenda Diária
-* **Caso de Uso:** UC04 — Visualizar Agenda Diária
-* **Ator Principal:** Barbeiro
-* **Resumo:** Permite ao barbeiro consultar a sua lista de atendimentos do dia.
-* **Pré-condições:** Barbeiro autenticado.
-* **Pós-condições:** Agenda do dia apresentada.
-
-#### FLUXO PRINCIPAL
-1. O barbeiro acede ao painel principal.
-2. O sistema carrega e exibe os agendamentos do dia ordenados por horário.
+1. O administrador acede ao painel administrativo e seleciona "Gerenciar Serviços" ou "Gerenciar Barbeiros".
+2. O sistema exibe a lista atual de registos cadastrados.
+3. O administrador opta por cadastrar um novo item ou editar/inativar um existente (informando nome, preço e duração para serviços; ou nome, e-mail, senha inicial e dias/horários de atendimento para barbeiros).
+4. O administrador guarda as alterações.
+5. O sistema valida os dados e atualiza a base de dados.
