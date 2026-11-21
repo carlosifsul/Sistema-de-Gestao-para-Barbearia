@@ -36,7 +36,7 @@
 
 ---
 
----
+## 2. Documentação dos Casos de Uso
 
 ### UC00: Cadastrar Conta e Realizar Login
 * **Caso de Uso:** UC00 — Cadastrar Conta e Realizar Login
@@ -81,3 +81,19 @@
 3. O administrador opta por cadastrar um novo item ou editar/inativar um existente (informando nome, preço e duração para serviços; ou nome, e-mail, senha inicial e dias/horários de atendimento para barbeiros).
 4. O administrador guarda as alterações.
 5. O sistema valida os dados e atualiza a base de dados.
+
+   ---
+
+## 3. Diagrama de Classes
+
+### 3.1. Modelo Conceitual
+
+![Diagrama de Classes - Modelo Conceitual](./img/diagrama-classes-conceitual.png)
+
+*Descrição do Modelo Conceitual:* Apresenta as entidades centrais do domínio do **BarberSys** e suas regras estruturais. A classe base **Usuario** generaliza os três perfis do sistema (**Cliente**, **Barbeiro** e **Administrador**). Um **Cliente** realiza zero ou vários **Agendamentos**, cada qual vinculado a um **Barbeiro**, contendo um ou mais **Serviços** e podendo aplicar opcionalmente um **CupomDesconto**.
+
+### 3.2. Modelo de Domínio (Especificação)
+
+![Diagrama de Classes - Modelo de Domínio](./img/diagrama-classes-dominio.png)
+
+*Descrição do Modelo de Domínio:* Detalha a estrutura orientada a objetos para implementação, definindo visibilidade de atributos (`-` privado, `+` público), tipagem forte, enumerações (`PerfilUsuario` e `StatusAgendamento`) e métodos que encapsulam as regras de negócio — como `autenticar()`, `validarAntecedenciaCancelamento()` (RN01) e `verificarToleranciaAtraso()` (RN03).
