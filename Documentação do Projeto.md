@@ -97,3 +97,19 @@
 ![Diagrama de Classes - Modelo de Domínio](./img/diagrama-classes-dominio.png)
 
 *Descrição do Modelo de Domínio:* Detalha a estrutura orientada a objetos para implementação, definindo visibilidade de atributos (`-` privado, `+` público), tipagem forte, enumerações (`PerfilUsuario` e `StatusAgendamento`) e métodos que encapsulam as regras de negócio — como `autenticar()`, `validarAntecedenciaCancelamento()` (RN01) e `verificarToleranciaAtraso()` (RN03).
+
+---
+
+## 4. Diagramas Comportamentais
+
+### 4.1. Diagrama de Sequência (UC01 — Realizar Agendamento)
+
+![Diagrama de Sequência - Realizar Agendamento](./img/diagrama-sequencia-agendamento.png)
+
+*Descrição do Diagrama:* Ilustra a troca de mensagens cronológica entre o ator **Cliente** e as classes de fronteira (`TelaAgendamento`), controle (`AgendamentoController`) e entidade (`Barbeiro`, `Agendamento`, `CupomDesconto`). Contempla a consulta obrigatória de horários, o bloco opcional (`opt`) para aplicação de cupom de desconto e o cálculo final do agendamento.
+
+### 4.2. Diagrama de Máquina de Estados (Agendamento)
+
+![Diagrama de Máquina de Estados - Agendamento](./img/diagrama-estados-agendamento.png)
+
+*Descrição do Diagrama:* Representa as transições de estado possíveis para um **Agendamento** desde a sua criação até o encerramento, aplicando diretamente a política de cancelamento com antecedência mínima de 2 horas (**RN01**) e a marcação automática de falta após 15 minutos de tolerância (**RN03**).
