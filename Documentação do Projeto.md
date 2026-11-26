@@ -113,3 +113,15 @@
 ![Diagrama de Máquina de Estados - Agendamento](./img/diagrama-estados-agendamento.png)
 
 *Descrição do Diagrama:* Representa as transições de estado possíveis para um **Agendamento** desde a sua criação até o encerramento, aplicando diretamente a política de cancelamento com antecedência mínima de 2 horas (**RN01**) e a marcação automática de falta após 15 minutos de tolerância (**RN03**).
+
+---
+
+## 6. Protótipo: Mapa do Site e Mockups
+
+### 6.1. Mapa do Site (Sitemap)
+
+![Mapa do Site - BarberSys](./img/mapa-do-site.png)
+
+*Descrição do Mapa do Site:* Apresenta a arquitetura de navegação e hierarquia de páginas do **BarberSys**, divididas entre a área pública (Login, Cadastro e Catálogo) e as áreas restritas por perfil de acesso (**Cliente**, **Barbeiro** e **Administrador**).
+
++-------------------------------------------------------------------+
