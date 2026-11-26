@@ -116,12 +116,12 @@
 
 ---
 
-## 6. Protótipo: Mapa do Site e Mockups
+## 5. Protótipo: Mapa do Site e Mockups
 
-### 6.1. Mapa do Site (Sitemap)
+### 5.1. Mapa do Site (Sitemap)
 
 ![Mapa do Site - BarberSys](./img/mapa-do-site.png)
 
 *Descrição do Mapa do Site:* Apresenta a arquitetura de navegação e hierarquia de páginas do **BarberSys**, divididas entre a área pública (Login, Cadastro e Catálogo) e as áreas restritas por perfil de acesso (**Cliente**, **Barbeiro** e **Administrador**).
 
-+-------------------------------------------------------------------+
+
