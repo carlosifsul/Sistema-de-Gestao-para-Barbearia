@@ -29,14 +29,6 @@ O sistema contempla:
 ## 2. Diagrama de Classes 
 Toda a especificação de requisitos, regras de negócio, diagramas e documentação textual dos casos de uso encontram-se no ficheiro:
 👉 **[Documentação do Projeto.md](./Documentação%20do%20Projeto.md)**
----
-
-# Trabalho Final — Análise e Projeto de Sistemas (APS)
-
-**Disciplina:** Análise e Projeto de Sistemas (APS)  
-**Professor:** Mateus de Freitas Invernisi  
-**Aluno:** [O Teu Nome Completo]
-
 
 ---
 
